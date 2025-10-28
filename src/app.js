@@ -18,6 +18,14 @@ app.use('/api/auth', authRoutes);
 app.use('/api/answer', answerRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 
+app.user((err, req, res, next) => {
+    console.error('Erro interno não tratado', err.stack);
+    res.stauts(500).json({
+        message: 'Ocorreu um erro interno inesperado no servidor.',
+        error: err.message,
+    });
+});
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));

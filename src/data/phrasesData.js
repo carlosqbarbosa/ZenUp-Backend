@@ -11,6 +11,7 @@ const phrasesData = {
         "Sugira uma pausa guiada de 5 minutos de meditação ou respiração profunda antes do início das atividades.",
     ],
 
+<<<<<<< Updated upstream
     energia_baixa: [
         "A energia da equipe está em declínio. Proponha um 'Desafio de Hidratação' ou um 'Intervalo Ativo' com alongamentos.",
         "Foco na produtividade e não na ocupação. Garanta que as tarefas de alto valor sejam feitas nas horas de pico de energia da equipe.",
@@ -21,3 +22,18 @@ const phrasesData = {
 };
 
 module.exports = phrasesData;
+=======
+  // === Energia (0-10 baixa, 11-20 normal, 21-30 alta) ===
+  energia_baixa: [
+    "A energia da equipe está em declínio. Proponha um 'Desafio de Hidratação' ou um 'Intervalo Ativo' com alongamentos.",
+    "Foco na produtividade e não na ocupação. Garanta que as tarefas de alto valor sejam feitas nas horas de pico de energia da equipe.",
+    "Mude o cenário! Permita que a equipe mude o local de trabalho por um dia (se possível) para quebrar a rotina.",
+  ],
+  energia_alta: [
+    "A equipe está com alta energia! Use este momento para tacklear projetos desafiadores e mais complexos.",
+    "Excelente energia! Garanta que o fluxo de trabalho não tenha gargalos para capitalizar o ritmo atual.",
+  ]
+}
+
+module.exports = { phrasesData };
+>>>>>>> Stashed changes

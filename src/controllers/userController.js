@@ -21,12 +21,8 @@ const userController = {
 
   async getAllUsers(req, res) {
     try {
-      const user = await userService.getAllUsers();
-      res.status(200).json(user);
-      if (!user) {
-        return res.status(404).json({message: 'Usuário não encontrado.'})
-      }
-      res.status(200).json(user);
+      const users = await userService.getAllUsers();
+      res.status(200).json(users);
     }catch (error) {
       console.error('Erro ao buscar usuários: ', error);
       res.status(500).json({ message: 'Erro interno do servidor.' });
@@ -40,6 +36,7 @@ const userController = {
       if (!user) {
         return res.status(404).json({ message: 'Usuário não encontrado.'});
       }
+      return res.status(200).json(user);
     }catch(error) {
       console.error('Erro ao buscar usuário: ', error);
       res.status(500).json({ message: 'Erro interno do servidor.'});

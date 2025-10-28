@@ -6,14 +6,11 @@ const dashboardService = {
     async checkPermission(usuarioLogadoId, empresaIdParam) {
         const empresaUsuario = await prisma.usuario.findUnique({
             where: { id_usuario: usuarioLogadoId },
-            select: { id_empresa: true, tipo_usuario: true }
+            select: { id_empresa: true}
         });
         
         const idEmpresaNumeric = parseInt(empresaIdParam);
 
-        if (empresaUsuario.tipo_usuario !== 'gestor') {
-            throw new Error('PERMISSION_DENIED');
-        }
         if (empresaUsuario.id_empresa !== idEmpresaNumeric) {
             throw new Error('ACCESS_DENIED_TO_COMPANY');
         }

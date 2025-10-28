@@ -1,7 +1,15 @@
 const dashboardService = require('../service/dashboardService');
+<<<<<<< Updated upstream
 
 exports.getIndicadoresAgregados = async (req, res) => {
     const id_empresa = parseInt(req.params.id);
+=======
+const { getRecommendationPhrase } = require('../service/phrasesService'); 
+
+exports.getIndicadoresAgregados = async (req, res) => {
+    const id_empresa = parseInt(req.params.id); 
+    const usuarioLogadoId = req.user.id;
+>>>>>>> Stashed changes
 
     try {
         await dashboardService.checkPermission(usuarioLogadoId, id_empresa);
@@ -37,7 +45,7 @@ exports.getIndicadoresAgregados = async (req, res) => {
 
 exports.getUsuariosPorEmpresa = async (req, res) => {
     const id_empresa = req.params.id;
-    const usuarioLogadoId = req.usuario.id;
+    const usuarioLogadoId = req.user.id;
 
     try {
         await dashboardService.checkPermission(usuarioLogadoId, id_empresa);

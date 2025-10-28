@@ -3,8 +3,6 @@ const prisma = new PrismaClient();
 const bcrypt = require('bcrypt');
 const SALT_ROUNDS = 10;
 
-//criando usuario
-
 const userService = {
   async createUser(userData) {
     const hashedPassword = await bcrypt.hash(userData.password, SALT_ROUNDS);
