@@ -67,7 +67,6 @@ const userController = {
 };
 
 module.exports = {
-  userController,
   createUser: userController.createUser,
   getAllUsers: userController.getAllUsers,
   getUserById: userController.getUserById,

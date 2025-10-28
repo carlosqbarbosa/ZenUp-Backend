@@ -18,14 +18,16 @@ app.use('/api/auth', authRoutes);
 app.use('/api/answer', answerRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 
-app.user((err, req, res, next) => {
+app.use((err, req, res, next) => {
     console.error('Erro interno não tratado', err.stack);
+    const errorMessage = process.env.NODE_ENV === 'production' 
+        ? 'Internal Server Error' 
+        : err.message;
     res.stauts(500).json({
         message: 'Ocorreu um erro interno inesperado no servidor.',
-        error: err.message,
+        error: errorMessage,
     });
 });
-
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));

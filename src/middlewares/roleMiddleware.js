@@ -7,7 +7,7 @@ const checkRole = (requiredRole) => {
         }
             if (userRole !== requiredRole) {
         return res.status(403).json({ 
-            message: 'Acesso negado. Você não tem permissão necessária.'
+            message: `Acesso negado. Você não tem a permissão necessária ('${requiredRole}').`
         });
     }
     next();

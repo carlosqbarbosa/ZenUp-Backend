@@ -3,24 +3,8 @@ const prisma = new PrismaClient();
 
 const dashboardService = {
 
-    async checkPermission(usuarioLogadoId, empresaIdParam) {
-        const empresaUsuario = await prisma.usuario.findUnique({
-            where: { id_usuario: usuarioLogadoId },
-            select: { id_empresa: true}
-        });
-        
-        const idEmpresaNumeric = parseInt(empresaIdParam);
-
-        if (empresaUsuario.id_empresa !== idEmpresaNumeric) {
-            throw new Error('ACCESS_DENIED_TO_COMPANY');
-        }
-
-        return empresaUsuario;
-    },
-
-    async getIndicadoresAgregados(usuarioLogadoId, id_empresa_param) {
+    async getIndicadoresAgregados(id_empresa_param) {
         const id_empresa = id_empresa_param;
-
         const respostas = await prisma.respostas.findMany({
             where: {
                 usuario: {
