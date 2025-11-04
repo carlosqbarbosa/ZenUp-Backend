@@ -1,4 +1,4 @@
-const { prismaClient} = require('@prisma/client');
+const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 const checkCompanyAccess = async (req, res, next ) => {

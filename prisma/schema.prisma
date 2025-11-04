@@ -48,7 +48,7 @@ model Usuarios {
   id_empresa Int
   equipe Equipes @relation(fields: [id_equipe], references: [id_equipe])
   id_equipe Int
-
+  resposta Respostas[]
   conversa_ia Conversa_IA[]
 
 }
@@ -64,9 +64,11 @@ model Questionarios {
 model Respostas {
   id_resposta Int @id @default(autoincrement())
   data_resposta DateTime @default(now())
-  humor String @db.VarChar(50)
-  energia String @db.VarChar(50)
-  estresse String @db.VarChar(50)
+  humor Int
+  energia Int
+  estresse Int
+  usuario Usuarios @relation(fields: [id_usuario], references: [id_usuario])
+  id_usuario Int
   questionario Questionarios @relation(fields: [id_questionario], references: [id_questionario])
   id_questionario Int
 }

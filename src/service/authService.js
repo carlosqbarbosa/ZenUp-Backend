@@ -7,14 +7,6 @@ const JWT_SECRET = process.env.JWT_SECRET || 'uma_chave_secreta_muito_forte_e_al
 
 // 3. Objeto Auth Service
 const authService = {
-    /**
-     * Tenta logar um usuário com as credenciais fornecidas.
-     * A responsabilidade é: encontrar, validar e gerar token.
-     * @param {string} email - O e-mail do usuário.
-     * @param {string} senha - A senha não criptografada do usuário.
-     * @returns {object} - { token, user: { id_usuario, nome, email, tipo_usuario } }
-     * @throws {Error} - Se o e-mail/senha for inválido ou ocorrer um erro de DB.
-     */
     async login({ email, senha }) {
         const usuario = await prisma.usuario.findUnique({
             where: { email },
