@@ -5,13 +5,7 @@ const dashboardService = {
 
     async getIndicadoresAgregados(id_empresa_param) {
         const id_empresa = id_empresa_param;
-        return {
-            humorMedio: 15.5,
-            energiaMedia: 20.1,
-            estresseMedio: 8.0,
-            totalCheckins: 30
-        };
-        /*const respostas = await prisma.respostas.findMany({
+        const respostas = await prisma.respostas.findMany({
             where: {
                 usuario: {
                     id_empresa: id_empresa
@@ -47,7 +41,7 @@ const dashboardService = {
             energiaMedia: parseFloat(energiaMedia.toFixed(2)),
             estresseMedio: parseFloat(estresseMedio.toFixed(2)),
             totalCheckins: totalCheckins
-        };*/
+        };
     },
 
 
