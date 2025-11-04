@@ -8,11 +8,11 @@ const JWT_SECRET = process.env.JWT_SECRET || 'uma_chave_secreta_muito_forte_e_al
 // 3. Objeto Auth Service
 const authService = {
     async login({ email, senha }) {
-        const usuario = await prisma.usuario.findUnique({
+        const usuario = await prisma.usuarios.findUnique({
             where: { email },
             select: {
                 id_usuario: true,
-                nome: true,
+                nome_funcionario: true,
                 email: true,
                 senha_hash: true,
                 tipo_usuario: true,

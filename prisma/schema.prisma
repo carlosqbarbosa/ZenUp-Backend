@@ -23,7 +23,7 @@ model Empresas {
 model Equipes {
   id_equipe Int @id @default(autoincrement())
   nome_equipe String @db.VarChar(255)
-  descricao String? @db.VarChar(255)
+  descricao String?
   indicador_bem_estar Int @default(0)
   empresa Empresas @relation(fields: [id_empresa], references: [id_empresa])
   id_empresa Int
@@ -46,7 +46,7 @@ model Usuarios {
 
   empresa Empresas @relation(fields: [id_empresa], references: [id_empresa])
   id_empresa Int
-  equipe Equipes @relation(fields: [id_equipe], references: [id_equipe])
+  equipe Equipes @relation(fields: [id_equipe], references: [id_equipe]) 
   id_equipe Int
   resposta Respostas[]
   conversa_ia Conversa_IA[]

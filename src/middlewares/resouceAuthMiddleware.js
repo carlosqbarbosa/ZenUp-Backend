@@ -3,14 +3,14 @@ const prisma = new PrismaClient();
 
 const checkCompanyAccess = async (req, res, next ) => {
     const id_empresa_param= req.params.id;
-    const usuarioLogado = req.user.id;
+    const usuarioLogadoId = req.user.id;
     
     if (!id_empresa_param || isNaN(parseInt(id_empresa_param))) {
         return res.status(400).json({ message: 'ID da empresa inválido ou não fornecido.' }); 
     };
 
     try {
-        const empresaUsuario = await prisma.usuario.findUnique({
+        const empresaUsuario = await prisma.usuarios.findUnique({
             where: {
                 id_usuario: usuarioLogadoId
             },
@@ -28,7 +28,7 @@ const checkCompanyAccess = async (req, res, next ) => {
         }
     } catch (error) {
         console.error('Erro no resourceAuthMiddleware:', error.message);
-        res.status(500).json({ message: 'Erro interno na verificação de acesso ao recurso.' });
+        next(error);
     }
 }
 

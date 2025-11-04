@@ -4,8 +4,13 @@
   "description": "",
   "type": "commonjs",
   "main": "src\\app.js",
+
+  "prisma": {
+    "seed": "node prisma\\seed.js"
+  },
   "scripts": {
     "dev": "node src\\app.js",
+    "seed": "node prisma\\seed.js",
     "start": "node src\\app.js",
     "postinstall": "prisma generate"
   },

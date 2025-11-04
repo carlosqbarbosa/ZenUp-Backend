@@ -7,7 +7,7 @@ const userService = {
   async createUser(userData) {
     const hashedPassword = await bcrypt.hash(userData.password, SALT_ROUNDS);
     try {
-      const newUser = await prisma.user.create({
+      const newUser = await prisma.usuarios.create({
         data: {
           nome: userData.nome,
           email: userData.email,
@@ -25,11 +25,11 @@ const userService = {
   },
 
   async getAllUsers() {
-    return prisma.user.findMany();
+    return prisma.usuarios.findMany();
   },
 
   async getUserById(id_user) {
-    return await prisma.user.findUnique({
+    return await prisma.usuarios.findUnique({
       where: { id_user: id_user}
     });
   },
@@ -41,14 +41,14 @@ const userService = {
       delete updateData.senha;
     }
 
-    return prisma.user.update ({
+    return prisma.usuarios.update ({
       where: {id_user: id_user},
       data: updateData
     });
   },
 
   async deleteUser(id_user) {
-    return await prisma.user.delete({
+    return await prisma.usuarios.delete({
       where: {id_user: id_user}
     });
   }
