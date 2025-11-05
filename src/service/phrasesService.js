@@ -9,24 +9,30 @@ function getRecommendationPhrase(key, valorMedio) {
     const indicador = valorMedio;
     let phrasekey = key;
     if (key === 'estresse') {
-        if (indicador >20) {
+        if (indicador <= 2) {
+            phrasekey += '_baixo';
+        } else if (indicador >= 4 ){
             phrasekey += '_alto';
-        } else if (indicador <= 10){
+        } else {
             phrasekey += '_normal';
         }
     }
     else if (key === 'humor') {
-        if (indicador <10) {
+        if (indicador <= 2) {
             phrasekey += '_muito_baixo';
-        } else if (indicador <= 20){
+        } else if (indicador >=5){
+            phrasekey += '_alto';
+        } else if (indicador > 2 && indicador < 5) {
             phrasekey += '_normal';
         }
     }
         else if (key === 'energia') {
-        if (indicador <10) {
+        if (indicador <= 2) {
             phrasekey += '_muito_baixo';
-        } else if (indicador > 20){
+        } else if (indicador >= 4){
             phrasekey += '_alta';
+        } else {
+            phrasekey += '_normal';
         }
     }
     const frasesDispiniveis = phrasesData[phrasekey];

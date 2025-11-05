@@ -4,18 +4,22 @@ const prisma = new PrismaClient();
 const dashboardService = {
 
     async getIndicadoresAgregados(id_empresa_param) {
-        const id_empresa = id_empresa_param;
+        const id_empresa = parseInt(id_empresa_param);
         const respostas = await prisma.respostas.findMany({
             where: {
                 usuario: {
-                    id_empresa: id_empresa
-                }
+                    equipe: {
+                        empresa: {
+                            id_empresa: id_empresa,
+                        },
+                    },
+                },
             },
             select: {
                 humor: true,
                 energia: true,
                 estresse: true,
-            }
+            },
         });
         if (respostas.length === 0) {
             return {

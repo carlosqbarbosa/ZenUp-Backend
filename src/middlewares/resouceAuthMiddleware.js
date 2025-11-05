@@ -26,6 +26,7 @@ const checkCompanyAccess = async (req, res, next ) => {
                 message: 'Acesso negado. Você não tem permissão para visualizar os dados desta empresa.' 
             });
         }
+        next();
     } catch (error) {
         console.error('Erro no resourceAuthMiddleware:', error.message);
         next(error);

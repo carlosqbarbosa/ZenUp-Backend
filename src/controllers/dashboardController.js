@@ -1,5 +1,5 @@
 const dashboardService = require("../service/dashboardService");
-const { getRecommendationPhrase } = require("../service/phrasesService");
+const getRecommendationPhrase = require("../service/phrasesService");
 
 exports.getIndicadoresAgregados = async (req, res) => {
   const id_empresa_param = req.params.id;
