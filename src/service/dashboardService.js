@@ -23,10 +23,10 @@ const dashboardService = {
         });
         if (respostas.length === 0) {
             return {
-                humorMedio: 0,
-                energiaMedia: 0,
-                estresseMedio: 0,
-                totalCheckins: 0
+                humorMedio: null,
+                energiaMedia: null,
+                estresseMedio: null,
+                totalCheckins: null
             };
         }
         const totalCheckins = respostas.length;

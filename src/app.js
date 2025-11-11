@@ -6,7 +6,7 @@ const app = express();
 const prisma = new PrismaClient();
 
 app.use(express.json());
-app.use(
+/*app.use(
   cors({
     origin: "http://localhost:5173", // ou a porta do front
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
@@ -14,7 +14,7 @@ app.use(
     credentials: true, // se precisar enviar cookies ou headers de autenticação
   })
 );
-
+*/
 const userRoutes = require("./routes/userRoutes");
 const authRoutes = require("./routes/authRoutes");
 const answerRoutes = require("./routes/answerRouter");
