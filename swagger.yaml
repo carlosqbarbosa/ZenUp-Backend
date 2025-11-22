@@ -1,0 +1,95 @@
+# swagger.yaml
+
+openapi: 3.0.0
+info:
+  title: API ZenUp - Gestão de Bem-Estar Corporativo
+  version: 1.0.0
+  description: API para monitorar os níveis de humor, estresse e energia dos colaboradores.
+servers:
+  - url: http://localhost:3000/api
+    description: Servidor de Desenvolvimento Local
+tags:
+  - name: Autenticação
+    description: Login de usuários
+  - name: Dashboard
+    description: Indicadores e dados de gestão
+  - name: Check-in
+    description: Registro de respostas de humor/energia/estresse
+
+# --- Componentes de Segurança (JWT) ---
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+          example: gestor@zencorp.com
+        senha:
+          type: string
+          example: 123456
+    Indicador:
+      type: object
+      properties:
+        humorMedio:
+          type: number
+          example: 4.5
+        recomendacaoHumor:
+          type: string
+          example: O humor está normal. Mantenha os canais abertos.
+security:
+  - bearerAuth: []
+
+# --- Rotas (Endpoints) ---
+paths:
+  /auth/login:
+    post:
+      tags:
+        - Autenticação
+      summary: Realiza login e retorna o Token JWT.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+      responses:
+        '200':
+          description: Login bem-sucedido.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '401':
+          description: Email ou senha inválidos.
+
+  /dashboard/empresas/{id}/indicadores:
+    get:
+      tags:
+        - Dashboard
+      summary: Retorna indicadores agregados (médias) e frases de recomendação.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Indicadores gerados com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Indicador'
+        '403':
+          description: Acesso negado (não é gestor ou não pertence à empresa).

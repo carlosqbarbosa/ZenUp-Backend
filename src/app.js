@@ -1,3 +1,6 @@
+const swaggerUi = require("swagger-ui-express");
+const YAML = require("yamljs");
+const swaggerDocument = YAML.load("./swagger.yaml");
 require("dotenv").config();
 const express = require("express");
 const { PrismaClient } = require("@prisma/client");
@@ -19,6 +22,7 @@ const userRoutes = require("./routes/userRoutes");
 const authRoutes = require("./routes/authRoutes");
 const answerRoutes = require("./routes/answerRouter");
 const dashboardRoutes = require("./routes/dashboardRouter");
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);

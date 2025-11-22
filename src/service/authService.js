@@ -8,6 +8,13 @@ const JWT_SECRET = process.env.JWT_SECRET || 'uma_chave_secreta_muito_forte_e_al
 // 3. Objeto Auth Service
 const authService = {
     async login({ email, senha }) {
+        const emailParts = email.split('@');
+        if (emailParts.length !== 2) {
+            throw new Error('AUTH_INVALID'); 
+        }
+        
+        const dominioFornecido = emailParts[1].toLowerCase();
+
         const usuario = await prisma.usuarios.findUnique({
             where: { email },
             select: {
@@ -16,11 +23,19 @@ const authService = {
                 email: true,
                 senha_hash: true,
                 tipo_usuario: true,
+                empresa: {
+                    select: {dominio_email: true}
+                }
             },
         });
 
         if (!usuario) {
             throw new Error('AUTH_INVALID'); 
+        }
+
+        const dominioEsperado = usuario.empresa.dominio_email.toLowerCase();
+        if (dominioEsperado !== dominioFornecido) {
+            throw new Error('Domínio de email inválido para esta organização.');
         }
 
         const isPasswordValid = await bcrypt.compare(senha, usuario.senha_hash);
