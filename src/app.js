@@ -1,27 +1,25 @@
+const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
 const YAML = require("yamljs");
 const swaggerDocument = YAML.load("./swagger.yaml");
 require("dotenv").config();
 const express = require("express");
-const { PrismaClient } = require("@prisma/client");
 
 const app = express();
-const prisma = new PrismaClient();
 
 app.use(express.json());
-/*app.use(
-  cors({
-    origin: "http://localhost:5173", // ou a porta do front
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true, // se precisar enviar cookies ou headers de autenticação
-  })
-);
-*/
+app.use(cors({
+  origin: "http://localhost:5173",
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+}));
+
 const userRoutes = require("./routes/userRoutes");
 const authRoutes = require("./routes/authRoutes");
 const answerRoutes = require("./routes/answerRouter");
 const dashboardRoutes = require("./routes/dashboardRouter");
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use("/api/users", userRoutes);
@@ -35,7 +33,7 @@ app.use((err, req, res, next) => {
     process.env.NODE_ENV === "production"
       ? "Internal Server Error"
       : err.message;
-  res.stauts(500).json({
+  res.status(500).json({
     message: "Ocorreu um erro interno inesperado no servidor.",
     error: errorMessage,
   });

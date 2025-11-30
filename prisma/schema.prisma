@@ -7,103 +7,94 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Empresas {
-  id_empresa Int @id @default(autoincrement())
-  nome_empresa String @db.VarChar(255)
-  cnpj String @unique
-  plano String?
-  dominio_email String @unique @db.VarChar(50)
+  id_empresa    Int        @id @default(autoincrement())
+  nome_empresa  String     @db.VarChar(255)
+  cnpj          String?    @unique
+  plano         String?
+  dominio_email String     @unique @db.VarChar(50)
 
-  equipe Equipes[]
-  usuario Usuarios[]
-
+  equipes   Equipes[]
+  usuarios  Usuarios[]
 }
 
 model Equipes {
-  id_equipe Int @id @default(autoincrement())
-  nome_equipe String @db.VarChar(255)
-  descricao String?
-  indicador_bem_estar Int @default(0)
-  empresa Empresas @relation(fields: [id_empresa], references: [id_empresa])
-  id_empresa Int
+  id_equipe           Int     @id @default(autoincrement())
+  nome_equipe         String  @db.VarChar(255)
+  descricao           String?
+  indicador_bem_estar Int     @default(0)
+  id_empresa          Int
+  id_condicao         Int
 
-  condicao Condicao @relation(fields: [id_condicao], references: [id_condicao])
-  id_condicao Int
-
-  usuario Usuarios[]
-  questionario Questionarios[]
-  
+  empresas      Empresas        @relation(fields: [id_empresa], references: [id_empresa])
+  condicao      Condicao        @relation(fields: [id_condicao], references: [id_condicao])
+  usuarios      Usuarios[]
+  questionarios Questionarios[]
 }
 
 model Usuarios {
-  id_usuario Int @id @default(autoincrement())
-  nome_funcionario String @db.VarChar(255)
-  email String @unique
-  senha_hash String
-  tipo_usuario String
-  ativo Boolean @default(true)
+  id_usuario       Int      @id @default(autoincrement())
+  nome_funcionario String   @db.VarChar(255)
+  email            String   @unique
+  senha_hash       String
+  tipo_usuario     String
+  ativo            Boolean  @default(true)
 
-  empresa Empresas @relation(fields: [id_empresa], references: [id_empresa])
-  id_empresa Int
-  equipe Equipes @relation(fields: [id_equipe], references: [id_equipe]) 
-  id_equipe Int
-  resposta Respostas[]
+  // Agora opcionais
+  id_empresa       Int?
+  id_equipe        Int?
+
+  empresas    Empresas?     @relation(fields: [id_empresa], references: [id_empresa])
+  equipes     Equipes?      @relation(fields: [id_equipe], references: [id_equipe])
+  respostas   Respostas[]
   conversa_ia Conversa_IA[]
-
 }
 
 model Questionarios {
-  id_questionario Int @id @default(autoincrement())
-  equipe Equipes @relation(fields: [id_equipe], references: [id_equipe])
-  id_equipe Int
-  resposta Respostas[]
-  dica Dicas[]
+  id_questionario Int    @id @default(autoincrement())
+  id_equipe       Int
+
+  equipes   Equipes     @relation(fields: [id_equipe], references: [id_equipe])
+  respostas Respostas[]
+  dicas     Dicas[]
 }
 
 model Respostas {
-  id_resposta Int @id @default(autoincrement())
-  data_resposta DateTime @default(now())
-  humor Int
-  energia Int
-  estresse Int
-  usuario Usuarios @relation(fields: [id_usuario], references: [id_usuario])
-  id_usuario Int
-  questionario Questionarios @relation(fields: [id_questionario], references: [id_questionario])
+  id_resposta     Int      @id @default(autoincrement())
+  data_resposta   DateTime @default(now())
+  humor           Int
+  energia         Int
+  estresse        Int
+  id_usuario      Int
   id_questionario Int
-}
 
+  usuarios      Usuarios      @relation(fields: [id_usuario], references: [id_usuario])
+  questionarios Questionarios @relation(fields: [id_questionario], references: [id_questionario])
+}
 
 model Dicas {
-  id_conversa Int @id @default(autoincrement())
-  resumo String
-  data_conversa DateTime @default(now())
-  questionario Questionarios @relation(fields: [id_questionario],references: [id_questionario])
+  id_conversa     Int      @id @default(autoincrement())
+  resumo          String
+  data_conversa   DateTime @default(now())
   id_questionario Int
-}
 
+  questionarios Questionarios @relation(fields: [id_questionario], references: [id_questionario])
+}
 
 model Conversa_IA {
-  id_conversa Int @id @default(autoincrement())
-  resumo String @db.VarChar(255)
+  id_conversa   Int      @id @default(autoincrement())
+  resumo        String   @db.VarChar(255)
   data_conversa DateTime @default(now())
-  usuario Usuarios @relation(fields: [id_usuario], references: [id_usuario])
-  id_usuario Int
-}
+  id_usuario    Int
 
+  usuarios Usuarios @relation(fields: [id_usuario], references: [id_usuario])
+}
 
 model Condicao {
-  id_condicao Int @id @default(autoincrement())
-  nome_condicao String @db.VarChar(255)
-  descricao String? @db.VarChar(255)
+  id_condicao    Int     @id @default(autoincrement())
+  nome_condicao  String  @db.VarChar(255)
+  descricao      String? @db.VarChar(255)
   range_condicao Int
 
-  equipe Equipes[]
-
-
+  equipes Equipes[]
 }
-
-
-// 
-
-

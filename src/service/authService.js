@@ -1,15 +1,15 @@
 const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient(); // Instância para interagir com o DB
-const bcrypt = require('bcrypt'); // Para comparação de senha (segurança)
-const jwt = require('jsonwebtoken'); // Para geração de tokens JWT
+const prisma = new PrismaClient();
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'uma_chave_secreta_muito_forte_e_aleatoria';
 
-// 3. Objeto Auth Service
 const authService = {
     async login({ email, senha }) {
         const emailParts = email.split('@');
         if (emailParts.length !== 2) {
+            console.log('Formato de email inválido');
             throw new Error('AUTH_INVALID'); 
         }
         
@@ -23,25 +23,38 @@ const authService = {
                 email: true,
                 senha_hash: true,
                 tipo_usuario: true,
-                empresa: {
-                    select: {dominio_email: true}
+                id_empresa: true,
+                empresas: {
+                    select: {
+                        id_empresa: true,
+                        dominio_email: true
+                    }
                 }
             },
         });
 
         if (!usuario) {
+            console.log('Usuário não encontrado');
             throw new Error('AUTH_INVALID'); 
-        }
-
-        const dominioEsperado = usuario.empresa.dominio_email.toLowerCase();
-        if (dominioEsperado !== dominioFornecido) {
-            throw new Error('Domínio de email inválido para esta organização.');
         }
 
         const isPasswordValid = await bcrypt.compare(senha, usuario.senha_hash);
 
         if (!isPasswordValid) {
+            console.log('Senha incorreta');
             throw new Error('AUTH_INVALID'); 
+        }
+
+        if (usuario.empresa && usuario.empresa.dominio_email) {
+            const dominioEsperado = usuario.empresa.dominio_email.toLowerCase();
+            console.log(' Validando domínio. Esperado:', dominioEsperado, 'Fornecido:', dominioFornecido);
+
+            if (dominioEsperado !== dominioFornecido) {
+                console.log('Domínio não corresponde');
+                throw new Error('Domínio de email inválido para esta organização.');
+            }
+        } else {
+            console.log('Usuário sem empresa vinculada, pulando validação de domínio');
         }
 
         const payload = {
@@ -52,7 +65,7 @@ const authService = {
         const token = jwt.sign(
             payload,
             JWT_SECRET,
-            { expiresIn: '1h' } // O token expira em 1 hora
+            { expiresIn: '1h' }
         );
 
         const { senha_hash, ...userWithoutHash } = usuario;
