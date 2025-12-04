@@ -88,7 +88,6 @@ const userController = {
           erro: "Usuário não encontrado" 
         });
       }
-
       if (!usuario.id_empresa) {
         console.log('Usuário não possui empresa associada');
         return res.status(404).json({ 
