@@ -66,10 +66,10 @@ model Respostas {
   energia         Int
   estresse        Int
   id_usuario      Int
-  id_questionario Int
+  id_questionario Int?
 
   usuarios      Usuarios      @relation(fields: [id_usuario], references: [id_usuario])
-  questionarios Questionarios @relation(fields: [id_questionario], references: [id_questionario])
+  questionarios Questionarios? @relation(fields: [id_questionario], references: [id_questionario])
 }
 
 model Dicas {

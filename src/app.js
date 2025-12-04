@@ -19,13 +19,15 @@ const userRoutes = require("./routes/userRoutes");
 const authRoutes = require("./routes/authRoutes");
 const answerRoutes = require("./routes/answerRouter");
 const dashboardRoutes = require("./routes/dashboardRouter");
+const mobileRoutes = require("./routes/mobileRouter");
+
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/answer", answerRoutes);
 app.use("/api/dashboard", dashboardRoutes);
+app.use("/api", mobileRoutes)
 
 app.use((err, req, res, next) => {
   console.error("Erro interno não tratado", err.stack);
