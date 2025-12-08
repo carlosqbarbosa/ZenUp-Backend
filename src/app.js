@@ -27,7 +27,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/answer", answerRoutes);
 app.use("/api/dashboard", dashboardRoutes);
-app.use("/api", mobileRoutes)
+app.use(mobileRoutes)
 
 app.use((err, req, res, next) => {
   console.error("Erro interno não tratado", err.stack);

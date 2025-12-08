@@ -1,16 +1,25 @@
-const express = require('express');
+// src/routes/mobileRouter.js
+const express = require("express");
 const router = express.Router();
 
-const authController = require('../controllers/authController');
-const authMiddleware = require('../middlewares/authMiddleware');
-const mobileRegistroController = require('../controllers/mobileRegistroController');
-const resumoController = require('../controllers/resumoController');
-const chatController = require('../controllers/chatController');
+const mobileAuthController = require("../controllers/mobileAuthController");
+const mobileRegistroController = require("../controllers/mobileRegistroController");
+const resumoController = require("../controllers/resumoController");
+const mobileChatController = require("../controllers/mobileChatController");
+const authMobile = require("../middlewares/authMobileMiddleware");
 
-router.post('/login', authController.login);
-router.post('/registro-diario', authMiddleware, mobileRegistroController.registrarDiario);
-router.get('/resumo/:id_usuario', authMiddleware, resumoController.getResumoByUsuario);
-router.post('/chat', authMiddleware, chatController.chat);
+// LOGIN (sem auth)
+router.post("login", mobileAuthController.login);
 
+// REGISTRO DIÁRIO (com auth)
+router.post("/api/registro_diario",authMobile,mobileRegistroController.registrarDiario
+);
+
+// RESUMO (com auth)
+router.get("/api/resumo/:id_usuario",authMobile,resumoController.obterResumo
+);
+
+// CHAT (com auth)
+router.post("/api/chat",authMobile,mobileChatController.chat);
 
 module.exports = router;
