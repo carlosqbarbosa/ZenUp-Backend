@@ -7,6 +7,12 @@ const express = require("express");
 
 const app = express();
 
+const userRoutes = require("./routes/userRoutes");
+const authRoutes = require("./routes/authRoutes");
+const answerRoutes = require("./routes/answerRouter");
+const dashboardRoutes = require("./routes/dashboardRouter");
+const mobileRoutes = require("./routes/mobileRouter");
+
 app.use(express.json());
 app.use(cors({
   origin: "http://localhost:5173",
@@ -14,12 +20,6 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
 }));
-
-const userRoutes = require("./routes/userRoutes");
-const authRoutes = require("./routes/authRoutes");
-const answerRoutes = require("./routes/answerRouter");
-const dashboardRoutes = require("./routes/dashboardRouter");
-const mobileRoutes = require("./routes/mobileRouter");
 
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

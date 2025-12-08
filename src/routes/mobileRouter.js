@@ -9,7 +9,7 @@ const mobileChatController = require("../controllers/mobileChatController");
 const authMobile = require("../middlewares/authMobileMiddleware");
 
 // LOGIN (sem auth)
-router.post("login", mobileAuthController.login);
+router.post("/api/login", mobileAuthController.login);
 
 // REGISTRO DIÁRIO (com auth)
 router.post("/api/registro_diario",authMobile,mobileRegistroController.registrarDiario

@@ -8,11 +8,11 @@ const registrarDiario = async (req, res) => {
     console.log('Usuário autenticado em req.user:', req.user);
 
     const { humor, energia, estresse } = req.body;
-    const userId = req.user?.id || req.user?.id_usuario
+    const userId = req.user?.id || req.user?.id_usuario; // ajuste conforme o payload do token
     
     if (!userId) {
       return res.status(400).json({ mensagem: 'Não foi possível identificar o usuário a partir do token'});
-    }; // veio do authMiddleware
+    };
 
     if (
       typeof humor === 'undefined' ||
@@ -36,7 +36,7 @@ const registrarDiario = async (req, res) => {
     console.log('Resposta criada:', novaResposta)
 
     return res.status(201).json({
-      id: novaResposta.id_resposta ?? novaResposta.id,
+      id: novaResposta.id_resposta,
       mensagem: 'Registro diário salvo com sucesso',
       dataRegistro: novaResposta.data_resposta,
     });
