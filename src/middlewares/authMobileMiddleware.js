@@ -10,10 +10,6 @@ function authMobile(req, res, next) {
 
   const [, token] = authHeader.split(" ");
 
-  /*if (scheme !== "Bearer" || !token) {
-    return res.status(401).json({ message: "Token mal formatado." });
-  }*/
-
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     req.user = decoded.id;
