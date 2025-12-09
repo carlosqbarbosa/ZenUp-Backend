@@ -1,3 +1,4 @@
+// src/service/mobileAuthService.js
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { PrismaClient } = require("@prisma/client");
@@ -13,23 +14,16 @@ async function login(email, senha) {
     throw err;
   }
 
-  // 2) Buscar usuário no banco pelo e-mail
+  console.log("LOGIN SERVICE - email recebido:", email, "senha:", senha);
+
+  // 2) Buscar usuário no banco
   const usuario = await prisma.usuarios.findUnique({
     where: { email },
-    select: {
-      id_usuario: true,
-      email: true,
-      senha_hash: true,
-      tipo_usuario: true,
-      id_empresa: true,
-      empresas: {
-        select: {
-          id_empresa: true,
-          dominio_email: true,
-        },
-      },
-    },
+    // se quiser ver tudo: tira o "select"
+    // select: { id_usuario: true, email: true, senha_hash: true, senha: true, tipo_usuario: true, id_empresa: true }
   });
+
+  console.log("LOGIN SERVICE - usuário encontrado:", usuario);
 
   if (!usuario) {
     const err = new Error("Credenciais inválidas.");
@@ -37,8 +31,20 @@ async function login(email, senha) {
     throw err;
   }
 
-  // 3) Validar senha (assumindo que 'senha_hash' está com bcrypt)
-  const senhaOk = await bcrypt.compare(senha, usuario.senha_hash);
+  // 3) Validar senha
+  let senhaOk = false;
+
+  // Se existir senha_hash, tenta bcrypt
+  if (usuario.senha_hash) {
+    console.log("LOGIN SERVICE - validando com bcrypt (senha_hash)");
+    senhaOk = await bcrypt.compare(senha, usuario.senha_hash);
+  }
+
+  // Se não passou no hash, e existir um campo senha em texto, tenta comparar direto
+  if (!senhaOk && usuario.senha) {
+    console.log("LOGIN SERVICE - validando com senha em texto puro");
+    senhaOk = senha === usuario.senha;
+  }
 
   if (!senhaOk) {
     const err = new Error("Credenciais inválidas.");
@@ -46,19 +52,16 @@ async function login(email, senha) {
     throw err;
   }
 
-  // 4) Montar payload do token (coloca o que você quiser carregar)
+  // 4) Montar payload do token
   const payload = {
     id: usuario.id_usuario,
     email: usuario.email,
     tipoUsuario: usuario.tipo_usuario,
-    idEmpresa: usuario.id_empresa,
-    dominioEmail: usuario.empresas?.dominio_email,
+    idEmpresa: usuario.id_empresa
   };
 
-  // 5) Gerar token JWT
   const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "1h" });
 
-  // 6) Retornar o formato que o mobile espera
   return { token, id: usuario.id_usuario };
 }
 
